@@ -1,0 +1,38 @@
+### Opening
+GET http://localhost:3000/
+Accept: application/json
+Content-Type: application/json
+
+### Find Quote By ID
+GET http://localhost:3000/api/quotes/LVmRBE6cytXv
+Accept: application/json
+Content-Type: application/json
+
+### Create Quote
+POST http://localhost:3000/api/quotes
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id": "asd",
+    "content": "asd",
+    "author_id": "asd"
+}
+
+### Find Author By ID
+GET http://localhost:3000/api/authors/zW_A5fM6XU-v
+Accept: application/json
+Content-Type: application/json
+
+### Create Author
+POST http://localhost:3000/api/authors
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "asd",
+    "link": "asd",
+    "bio": "asd",
+    "description": "asd",
+    "quote_count": 2
+}

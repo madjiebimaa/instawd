@@ -3,12 +3,15 @@ package main
 import (
 	"context"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 
 	appl "github.com/madjiebimaa/go-random-quotes/app"
+	"github.com/madjiebimaa/go-random-quotes/controller"
 	"github.com/madjiebimaa/go-random-quotes/helper"
 	"github.com/madjiebimaa/go-random-quotes/model/domain"
-	"github.com/madjiebimaa/go-random-quotes/model/web"
+	"github.com/madjiebimaa/go-random-quotes/repository"
+	"github.com/madjiebimaa/go-random-quotes/service"
 )
 
 type Response struct {
@@ -18,52 +21,30 @@ type Response struct {
 
 func main() {
 	app := fiber.New()
+	db := appl.NewDB()
+	validate := validator.New()
+
+	quoteRepository := repository.NewQuoteRepository()
+	quoteService := service.NewQuoteService(quoteRepository, db, validate)
+	quoteController := controller.NewQuoteController(quoteService)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
 	})
-	app.Get("/api/quotes/:quoteId", func(c *fiber.Ctx) error {
-		quoteId := c.Params("quoteId")
 
-		tx, err := appl.NewDB().Begin()
-		helper.PanicIfError(err)
-		defer helper.CommitOrRollBack(tx)
+	app.Post("/api/quotes", quoteController.Create)
+	app.Get("/api/quotes", quoteController.FindAll)
+	app.Get("/api/quotes/:quoteId", quoteController.FindById)
+	app.Get("/api/random", quoteController.FindRandom)
 
-		ctx := context.Background()
-
-		SQL := "SELECT id, content, author_id FROM quote WHERE id = ?"
-		rows, err := tx.QueryContext(ctx, SQL, quoteId)
-		helper.PanicIfError(err)
-		defer rows.Close()
-
-		var quote domain.Quote
-		if rows.Next() {
-			rows.Scan(&quote.Id, &quote.Content, &quote.AuthorId)
-		}
-
-		c.Status(fiber.StatusOK)
-		c.Type(fiber.MIMEApplicationJSON)
-		return c.JSON(quote)
-	})
-	app.Post("/api/quotes", func(c *fiber.Ctx) error {
-		c.Accepts(fiber.MIMEApplicationJSON)
-
-		var quote web.QuoteRequest
-		err := c.BodyParser(&quote)
-		helper.PanicIfError(err)
-
-		c.Status(fiber.StatusOK)
-		c.Type(fiber.MIMEApplicationJSON)
-		return c.JSON(quote)
-	})
 	app.Get("/api/authors/:authorId", func(c *fiber.Ctx) error {
 		authorId := c.Params("authorId")
 
+		ctx := context.Background()
+
 		tx, err := appl.NewDB().Begin()
 		helper.PanicIfError(err)
 		defer helper.CommitOrRollBack(tx)
-
-		ctx := context.Background()
 
 		SQL := "SELECT id, name, link, bio, description, quote_count FROM author WHERE id = ?"
 		rows, err := tx.QueryContext(ctx, SQL, authorId)
@@ -82,25 +63,26 @@ func main() {
 	app.Post("/api/authors", func(c *fiber.Ctx) error {
 		c.Accepts(fiber.MIMEApplicationJSON)
 
-		var author web.AuthorRequest
-		err := c.BodyParser(&author)
-		helper.PanicIfError(err)
+		// var author web.AuthorRequest
+		// err := c.BodyParser(&author)
+		// helper.PanicIfError(err)
 
-		tx, err := appl.NewDB().Begin()
-		helper.PanicIfError(err)
-		defer helper.CommitOrRollBack(tx)
+		// ctx := context.Background()
 
-		ctx := context.Background()
+		// tx, err := appl.NewDB().Begin()
+		// helper.PanicIfError(err)
+		// defer helper.CommitOrRollBack(tx)
 
-		author.Id = helper.RandomString(12)
+		// author.Id = helper.RandomString(12)
 
-		SQL := "INSERT INTO author (id, name, link, bio, description, quote_count) VALUES (?, ?, ?, ?, ?, ?)"
-		_, err = tx.ExecContext(ctx, SQL, author.Id, author.Name, author.Link, author.Bio, author.Description, author.QuoteCount)
-		helper.PanicIfError(err)
+		// SQL := "INSERT INTO author (id, name, link, bio, description, quote_count) VALUES (?, ?, ?, ?, ?, ?)"
+		// _, err = tx.ExecContext(ctx, SQL, author.Id, author.Name, author.Link, author.Bio, author.Description, author.QuoteCount)
+		// helper.PanicIfError(err)
 
-		c.Status(fiber.StatusOK)
-		c.Type(fiber.MIMEApplicationJSON)
-		return c.JSON(author)
+		// c.Status(fiber.StatusOK)
+		// c.Type(fiber.MIMEApplicationJSON)
+		// return c.JSON(author)
+		return c.SendString("Maintenance")
 	})
 
 	app.Listen(":3000")

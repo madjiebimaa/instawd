@@ -27,3 +27,16 @@ from quote_tag;
 SHOW TABLES;
 select *
 from author;
+-- =====================
+WITH quote_numbered AS (
+    SELECT id,
+        author_id,
+        content,
+        row_number() over() AS rn
+    FROM quote
+)
+SELECT id,
+    author_id,
+    content
+FROM quote_numbered
+WHERE rn = 1;

@@ -8,5 +8,7 @@ import (
 )
 
 type AuthorRepository interface {
+	Create(ctx context.Context, tx *sql.Tx, author domain.Author) domain.Author
 	FindById(ctx context.Context, tx *sql.Tx, authorId string) domain.Author
+	FindAll(ctx context.Context, tx *sql.Tx) []domain.Author
 }

@@ -8,5 +8,8 @@ import (
 )
 
 type QuoteRepository interface {
+	Create(ctx context.Context, tx *sql.Tx, quote domain.Quote) domain.Quote
 	FindById(ctx context.Context, tx *sql.Tx, quoteId string) domain.Quote
+	FindAll(ctx context.Context, tx *sql.Tx) []domain.Quote
+	FindRandom(ctx context.Context, tx *sql.Tx) domain.Quote
 }

@@ -2,9 +2,13 @@ package service
 
 import (
 	"context"
-	"net/http"
+
+	"github.com/madjiebimaa/go-random-quotes/model/web"
 )
 
 type QuoteService interface {
-	FindQuoteAndAuthor(ctx context.Context, request *http.Request)
+	Create(ctx context.Context, request web.QuoteCreateRequest) web.QuoteResponse
+	FindById(ctx context.Context, request web.QuoteFindByIdRequest) web.QuoteResponse
+	FindAll(ctx context.Context) []web.QuoteResponse
+	FindRandom(ctx context.Context) web.QuoteResponse
 }

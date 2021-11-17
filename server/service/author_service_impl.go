@@ -34,6 +34,7 @@ func (service *AuthorServiceImpl) Create(ctx context.Context, request web.Author
 	defer helper.CommitOrRollBack(tx)
 
 	id := helper.RandomString(12)
+	slug := helper.ToSlugFromAuthorName(request.Name)
 
 	author := domain.Author{
 		Id:          id,
@@ -42,6 +43,7 @@ func (service *AuthorServiceImpl) Create(ctx context.Context, request web.Author
 		Bio:         sql.NullString{String: request.Bio, Valid: request.Bio != ""},
 		Description: sql.NullString{String: request.Description, Valid: request.Description != ""},
 		QuoteCount:  0,
+		Slug:        slug,
 	}
 
 	author = service.AuthorRepository.Create(ctx, tx, author)

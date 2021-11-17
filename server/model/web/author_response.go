@@ -7,4 +7,5 @@ type AuthorResponse struct {
 	Bio         string `json:"bio"`
 	Description string `json:"description"`
 	QuoteCount  int    `json:"quote_count"`
+	Slug        string `json:"slug"`
 }

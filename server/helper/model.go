@@ -30,6 +30,7 @@ func ToAuthorResponse(author domain.Author) web.AuthorResponse {
 		Bio:         author.Bio.String,
 		Description: author.Description.String,
 		QuoteCount:  author.QuoteCount,
+		Slug:        author.Slug,
 	}
 }
 

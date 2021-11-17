@@ -9,4 +9,5 @@ type Author struct {
 	Bio         sql.NullString
 	Description sql.NullString
 	QuoteCount  int
+	Slug        string
 }

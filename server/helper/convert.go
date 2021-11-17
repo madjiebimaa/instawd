@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/madjiebimaa/go-random-quotes/app"
+	"github.com/madjiebimaa/go-random-quotes/model/domain"
 )
 
 func fileToBytes(location string) []byte {
@@ -118,4 +120,40 @@ func QuotesNoSQLToSQL(location string) {
 	for i := 0; i < len(quotes.Quotes); i++ {
 		stmt.ExecContext(ctx, quotes.Quotes[i].Id, quotes.Quotes[i].Content, quotes.Quotes[i].AuthorId)
 	}
+}
+
+func ToSlugFromAuthorName(name string) string {
+	res := strings.ReplaceAll(strings.ToLower(name), " ", "-")
+	return res
+}
+
+func AddSlugToAuthors() {
+	ctx := context.Background()
+
+	tx, err := app.NewDB().Begin()
+	PanicIfError(err)
+
+	SQL := "SELECT id, name, link, bio, description, quote_count FROM author"
+	rows, err := tx.QueryContext(ctx, SQL)
+	PanicIfError(err)
+
+	var authors []domain.Author
+	for rows.Next() {
+		var author domain.Author
+		rows.Scan(&author.Id, &author.Name, &author.Link, &author.Bio, &author.Description, &author.QuoteCount)
+		authors = append(authors, author)
+	}
+	rows.Close()
+
+	SQL = "UPDATE author SET slug = ? WHERE id = ?"
+	stmt, err := tx.PrepareContext(ctx, SQL)
+	PanicIfError(err)
+
+	for i := 0; i < len(authors); i++ {
+		slug := ToSlugFromAuthorName(authors[i].Name)
+		stmt.ExecContext(ctx, slug, authors[i].Id)
+	}
+	stmt.Close()
+
+	tx.Commit()
 }

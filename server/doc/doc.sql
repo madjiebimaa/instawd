@@ -42,3 +42,6 @@ ADD slug VARCHAR(100) NOT NULL;
 UPDATE author
 SET link = "test"
 WHERE id = "test";
+-- 
+DELETE FROM quote
+WHERE content = "asd";

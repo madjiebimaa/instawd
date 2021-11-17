@@ -22,6 +22,20 @@ func ToQuoteResponses(quotes []domain.Quote) []web.QuoteResponse {
 	return quoteResponses
 }
 
+func ToQuoteNoAuthor(quote domain.Quote) web.QuoteNoAuthorResponse {
+	return web.QuoteNoAuthorResponse{
+		Id:      quote.Id,
+		Content: quote.Content,
+	}
+}
+
+func ToQuoteAndAuthorResponse(quote domain.Quote, author domain.Author) web.QuoteAndAuthorResponse {
+	return web.QuoteAndAuthorResponse{
+		Quote:  ToQuoteNoAuthor(quote),
+		Author: ToAuthorResponse(author),
+	}
+}
+
 func ToAuthorResponse(author domain.Author) web.AuthorResponse {
 	return web.AuthorResponse{
 		Id:          author.Id,

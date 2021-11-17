@@ -10,25 +10,30 @@ Content-Type: application/json
 
 {
     "author_id": "pY4cjNm7ogoc",
-    "content": "asd"
+    "content": "test"
 }
-
-### Find Quote By ID
-GET http://localhost:3000/api/quotes/LVmRBE6cytXv
-Accept: application/json
-Content-Type: application/json
-
-### Get Random Quote
-GET http://localhost:3000/api/random
-Accept: application/json
-Content-Type: application/json
 
 ### Get All Quotes
 GET http://localhost:3000/api/quotes
 Accept: application/json
 Content-Type: application/json
 
-# ================================================================================================================
+### Find Quote By ID
+GET http://localhost:3000/api/quotes/LVmRBE6cytXv
+Accept: application/json
+Content-Type: application/json
+ 
+### Find Quote And Author
+GET http://localhost:3000/api/quotes/LVmRBE6cytXv/author
+Accept: application/json
+Content-Type: application/json
+
+### Get Random Quote
+GET http://localhost:3000/api/quotes/random-quote
+Accept: application/json
+Content-Type: application/json
+
+# ==================================================
 
 ### Create Author
 POST http://localhost:3000/api/authors
@@ -36,19 +41,23 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "name": "asd",
-    "link": "asd",
-    "bio": "asd",
-    "description": "asd",
-    "quote_count":
+    "name": "test",
+    "link": "test",
+    "bio": "test",
+    "description": "test",
 }
+
+### Find All Author
+GET http://localhost:3000/api/authors
+Accept: application/json
+Content-Type: application/json
 
 ### Find Author By ID
 GET http://localhost:3000/api/authors/-yyCeRZpAZLI
 Accept: application/json
 Content-Type: application/json
 
-### Find All Author
-GET http://localhost:3000/api/authors
+### Find Author By Slug
+GET http://localhost:3000/api/authors/slug/william-sloane-coffin
 Accept: application/json
 Content-Type: application/json

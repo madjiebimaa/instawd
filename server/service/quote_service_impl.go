@@ -59,6 +59,22 @@ func (service *QuoteServiceImpl) FindById(ctx context.Context, request web.Quote
 	return helper.ToQuoteResponse(quote)
 }
 
+func (service *QuoteServiceImpl) FindQuoteAndAuthor(ctx context.Context, request web.QuoteFindByIdRequest) web.QuoteAndAuthorResponse {
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
+
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollBack(tx)
+
+	quote := service.QuoteRepository.FindById(ctx, tx, request.Id)
+
+	authorRepository := repository.NewAuthorRepository()
+	author := authorRepository.FindById(ctx, tx, quote.AuthorId)
+
+	return helper.ToQuoteAndAuthorResponse(quote, author)
+}
+
 func (service *QuoteServiceImpl) FindAll(ctx context.Context) []web.QuoteResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)

@@ -61,3 +61,18 @@ func (controller *AuthorControllerImpl) FindAll(c *fiber.Ctx) error {
 	c.Type(fiber.MIMEApplicationJSON)
 	return c.JSON(webResponse)
 }
+
+func (controller *AuthorControllerImpl) FindBySlug(c *fiber.Ctx) error {
+	var author web.AuthorFindBySlugRequest
+	slug := c.Params("authorSlug")
+	author.Slug = slug
+
+	ctx := context.Background()
+
+	authorResponse := controller.AuthorService.FindBySlug(ctx, author)
+	webResponse := helper.ToNewWebResponse(fiber.StatusOK, "OK", authorResponse)
+
+	c.Status(fiber.StatusOK)
+	c.Type(fiber.MIMEApplicationJSON)
+	return c.JSON(webResponse)
+}

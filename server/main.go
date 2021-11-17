@@ -32,14 +32,20 @@ func main() {
 		return c.SendString("Hello, World 👋!")
 	})
 
+	// QUOTES ===================================
+
 	app.Post("/api/quotes", quoteController.Create)
 	app.Get("/api/quotes", quoteController.FindAll)
+	app.Get("/api/quotes/random-quote", quoteController.FindRandom)
 	app.Get("/api/quotes/:quoteId", quoteController.FindById)
-	app.Get("/api/random", quoteController.FindRandom)
+	app.Get("/api/quotes/:quoteId/author", quoteController.FindQuoteAndAuthor)
+
+	// AUTHORS ==================================
 
 	app.Post("/api/authors", authorController.Create)
 	app.Get("/api/authors", authorController.FindAll)
 	app.Get("/api/authors/:authorId", authorController.FindById)
+	app.Get("/api/authors/slug/:authorSlug", authorController.FindBySlug)
 
 	app.Listen(":3000")
 }

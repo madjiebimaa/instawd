@@ -10,4 +10,5 @@ type AuthorService interface {
 	Create(ctx context.Context, request web.AuthorCreateRequest) web.AuthorResponse
 	FindById(ctx context.Context, request web.AuthorFindByIdRequest) web.AuthorResponse
 	FindAll(ctx context.Context) []web.AuthorResponse
+	FindBySlug(ctx context.Context, request web.AuthorFindBySlugRequest) web.AuthorResponse
 }

@@ -73,3 +73,16 @@ func (service *AuthorServiceImpl) FindAll(ctx context.Context) []web.AuthorRespo
 
 	return helper.ToAuthorResponses(authors)
 }
+
+func (service *AuthorServiceImpl) FindBySlug(ctx context.Context, request web.AuthorFindBySlugRequest) web.AuthorResponse {
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
+
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollBack(tx)
+
+	author := service.AuthorRepository.FindBySlug(ctx, tx, request.Slug)
+
+	return helper.ToAuthorResponse(author)
+}

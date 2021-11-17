@@ -10,3 +10,7 @@ type AuthorCreateRequest struct {
 type AuthorFindByIdRequest struct {
 	Id string `json:"id"`
 }
+
+type AuthorFindBySlugRequest struct {
+	Slug string `json:"slug"`
+}

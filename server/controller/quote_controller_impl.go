@@ -51,6 +51,21 @@ func (controller *QuoteControllerImpl) FindById(c *fiber.Ctx) error {
 	return c.JSON(webResponse)
 }
 
+func (controller *QuoteControllerImpl) FindQuoteAndAuthor(c *fiber.Ctx) error {
+	var quote web.QuoteFindByIdRequest
+	id := c.Params("quoteId")
+	quote.Id = id
+
+	ctx := context.Background()
+	quoteResponse := controller.QuoteService.FindQuoteAndAuthor(ctx, quote)
+
+	webResponse := helper.ToNewWebResponse(fiber.StatusOK, "OK", quoteResponse)
+
+	c.Status(fiber.StatusOK)
+	c.Type(fiber.MIMEApplicationJSON)
+	return c.JSON(webResponse)
+}
+
 func (controller *QuoteControllerImpl) FindAll(c *fiber.Ctx) error {
 	ctx := context.Background()
 	quoteResponses := controller.QuoteService.FindAll(ctx)

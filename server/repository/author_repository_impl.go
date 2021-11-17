@@ -51,3 +51,17 @@ func (repository AuthorRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) 
 
 	return authors
 }
+
+func (repository *AuthorRepositoryImpl) FindBySlug(ctx context.Context, tx *sql.Tx, authorSlug string) domain.Author {
+	SQL := "SELECT id, name, link, bio, description, quote_count, slug FROM author WHERE slug = ?"
+	rows, err := tx.QueryContext(ctx, SQL, authorSlug)
+	helper.PanicIfError(err)
+	defer rows.Close()
+
+	var author domain.Author
+	if rows.Next() {
+		rows.Scan(&author.Id, &author.Name, &author.Link, &author.Bio, &author.Description, &author.QuoteCount, &author.Slug)
+	}
+
+	return author
+}

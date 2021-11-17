@@ -33,6 +33,15 @@ func ToAuthorResponse(author domain.Author) web.AuthorResponse {
 	}
 }
 
+func ToAuthorResponses(authors []domain.Author) []web.AuthorResponse {
+	var authorResponses []web.AuthorResponse
+	for _, author := range authors {
+		authorResponses = append(authorResponses, ToAuthorResponse(author))
+	}
+
+	return authorResponses
+}
+
 func ToNewWebResponse(code int, status string, data interface{}) web.WebResponse {
 	return web.WebResponse{
 		Code:   code,

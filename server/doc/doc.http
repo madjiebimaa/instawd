@@ -28,10 +28,7 @@ GET http://localhost:3000/api/quotes
 Accept: application/json
 Content-Type: application/json
 
-### Find Author By ID
-GET http://localhost:3000/api/authors/zW_A5fM6XU-v
-Accept: application/json
-Content-Type: application/json
+# ================================================================================================================
 
 ### Create Author
 POST http://localhost:3000/api/authors
@@ -45,3 +42,13 @@ Content-Type: application/json
     "description": "asd",
     "quote_count":
 }
+
+### Find Author By ID
+GET http://localhost:3000/api/authors/-yyCeRZpAZLI
+Accept: application/json
+Content-Type: application/json
+
+### Find All Author
+GET http://localhost:3000/api/authors
+Accept: application/json
+Content-Type: application/json

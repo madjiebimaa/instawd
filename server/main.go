@@ -1,14 +1,11 @@
 package main
 
 import (
-	"context"
-
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 
 	appl "github.com/madjiebimaa/go-random-quotes/app"
 	"github.com/madjiebimaa/go-random-quotes/controller"
-	"github.com/madjiebimaa/go-random-quotes/helper"
 	"github.com/madjiebimaa/go-random-quotes/model/domain"
 	"github.com/madjiebimaa/go-random-quotes/repository"
 	"github.com/madjiebimaa/go-random-quotes/service"
@@ -28,6 +25,10 @@ func main() {
 	quoteService := service.NewQuoteService(quoteRepository, db, validate)
 	quoteController := controller.NewQuoteController(quoteService)
 
+	authorRepository := repository.NewAuthorRepository()
+	authorService := service.NewAuthorService(authorRepository, db, validate)
+	authorController := controller.NewAuthorController(authorService)
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
 	})
@@ -37,53 +38,57 @@ func main() {
 	app.Get("/api/quotes/:quoteId", quoteController.FindById)
 	app.Get("/api/random", quoteController.FindRandom)
 
-	app.Get("/api/authors/:authorId", func(c *fiber.Ctx) error {
-		authorId := c.Params("authorId")
+	app.Post("/api/authors", authorController.Create)
+	app.Get("/api/authors", authorController.FindAll)
+	app.Get("/api/authors/:authorId", authorController.FindById)
 
-		ctx := context.Background()
+	// app.Get("/api/authors/:authorId", func(c *fiber.Ctx) error {
+	// 	authorId := c.Params("authorId")
 
-		tx, err := appl.NewDB().Begin()
-		helper.PanicIfError(err)
-		defer helper.CommitOrRollBack(tx)
+	// 	ctx := context.Background()
 
-		SQL := "SELECT id, name, link, bio, description, quote_count FROM author WHERE id = ?"
-		rows, err := tx.QueryContext(ctx, SQL, authorId)
-		helper.PanicIfError(err)
-		defer rows.Close()
+	// 	tx, err := appl.NewDB().Begin()
+	// 	helper.PanicIfError(err)
+	// 	defer helper.CommitOrRollBack(tx)
 
-		var author domain.Author
-		if rows.Next() {
-			rows.Scan(&author.Id, &author.Name, &author.Link, &author.Bio, &author.Description, &author.QuoteCount)
-		}
+	// 	SQL := "SELECT id, name, link, bio, description, quote_count FROM author WHERE id = ?"
+	// 	rows, err := tx.QueryContext(ctx, SQL, authorId)
+	// 	helper.PanicIfError(err)
+	// 	defer rows.Close()
 
-		c.Status(fiber.StatusOK)
-		c.Type(fiber.MIMEApplicationJSON)
-		return c.JSON(helper.ToAuthorResponse(author))
-	})
-	app.Post("/api/authors", func(c *fiber.Ctx) error {
-		c.Accepts(fiber.MIMEApplicationJSON)
+	// 	var author domain.Author
+	// 	if rows.Next() {
+	// 		rows.Scan(&author.Id, &author.Name, &author.Link, &author.Bio, &author.Description, &author.QuoteCount)
+	// 	}
 
-		// var author web.AuthorRequest
-		// err := c.BodyParser(&author)
-		// helper.PanicIfError(err)
+	// 	c.Status(fiber.StatusOK)
+	// 	c.Type(fiber.MIMEApplicationJSON)
+	// 	return c.JSON(helper.ToAuthorResponse(author))
+	// })
+	// app.Post("/api/authors", func(c *fiber.Ctx) error {
+	// 	c.Accepts(fiber.MIMEApplicationJSON)
 
-		// ctx := context.Background()
+	// 	// var author web.AuthorRequest
+	// 	// err := c.BodyParser(&author)
+	// 	// helper.PanicIfError(err)
 
-		// tx, err := appl.NewDB().Begin()
-		// helper.PanicIfError(err)
-		// defer helper.CommitOrRollBack(tx)
+	// 	// ctx := context.Background()
 
-		// author.Id = helper.RandomString(12)
+	// 	// tx, err := appl.NewDB().Begin()
+	// 	// helper.PanicIfError(err)
+	// 	// defer helper.CommitOrRollBack(tx)
 
-		// SQL := "INSERT INTO author (id, name, link, bio, description, quote_count) VALUES (?, ?, ?, ?, ?, ?)"
-		// _, err = tx.ExecContext(ctx, SQL, author.Id, author.Name, author.Link, author.Bio, author.Description, author.QuoteCount)
-		// helper.PanicIfError(err)
+	// 	// author.Id = helper.RandomString(12)
 
-		// c.Status(fiber.StatusOK)
-		// c.Type(fiber.MIMEApplicationJSON)
-		// return c.JSON(author)
-		return c.SendString("Maintenance")
-	})
+	// 	// SQL := "INSERT INTO author (id, name, link, bio, description, quote_count) VALUES (?, ?, ?, ?, ?, ?)"
+	// 	// _, err = tx.ExecContext(ctx, SQL, author.Id, author.Name, author.Link, author.Bio, author.Description, author.QuoteCount)
+	// 	// helper.PanicIfError(err)
+
+	// 	// c.Status(fiber.StatusOK)
+	// 	// c.Type(fiber.MIMEApplicationJSON)
+	// 	// return c.JSON(author)
+	// 	return c.SendString("Maintenance")
+	// })
 
 	app.Listen(":3000")
 }

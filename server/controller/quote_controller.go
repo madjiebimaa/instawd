@@ -8,4 +8,5 @@ type QuoteController interface {
 	FindQuoteAndAuthor(c *fiber.Ctx) error
 	FindAll(c *fiber.Ctx) error
 	FindRandom(c *fiber.Ctx) error
+	FindRandomAndAuthor(c *fiber.Ctx) error
 }

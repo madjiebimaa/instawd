@@ -9,3 +9,8 @@ type AuthorResponse struct {
 	QuoteCount  int    `json:"quote_count"`
 	Slug        string `json:"slug"`
 }
+
+type AuthorAndQuotesResponse struct {
+	Author AuthorResponse          `json:"author"`
+	Quotes []QuoteNoAuthorResponse `json:"quotes"`
+}

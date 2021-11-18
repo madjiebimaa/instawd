@@ -45,3 +45,12 @@ WHERE id = "test";
 -- 
 DELETE FROM quote
 WHERE content = "asd";
+-- 
+SELECT id,
+    name,
+    quote_count
+FROM author
+WHERE quote_count = (
+        SELECT MAX(quote_count)
+        FROM author
+    );

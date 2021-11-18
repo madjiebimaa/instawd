@@ -33,6 +33,11 @@ GET http://localhost:3000/api/quotes/random-quote
 Accept: application/json
 Content-Type: application/json
 
+### Get Random Quote And Author
+GET http://localhost:3000/api/quotes/random-quote/author
+Accept: application/json
+Content-Type: application/json
+
 # ==================================================
 
 ### Create Author
@@ -59,5 +64,10 @@ Content-Type: application/json
 
 ### Find Author By Slug
 GET http://localhost:3000/api/authors/slug/william-sloane-coffin
+Accept: application/json
+Content-Type: application/json
+
+### Find Author And Quotes
+GET http://localhost:3000/api/authors/ropvZKOXYhLr/quotes
 Accept: application/json
 Content-Type: application/json

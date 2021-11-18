@@ -22,16 +22,25 @@ func ToQuoteResponses(quotes []domain.Quote) []web.QuoteResponse {
 	return quoteResponses
 }
 
-func ToQuoteNoAuthor(quote domain.Quote) web.QuoteNoAuthorResponse {
+func ToQuoteNoAuthorResponse(quote domain.Quote) web.QuoteNoAuthorResponse {
 	return web.QuoteNoAuthorResponse{
 		Id:      quote.Id,
 		Content: quote.Content,
 	}
 }
 
+func ToQuoteNoAuthorResponses(quotes []domain.Quote) []web.QuoteNoAuthorResponse {
+	var quoteNoAuthorResponses []web.QuoteNoAuthorResponse
+	for _, quote := range quotes {
+		quoteNoAuthorResponses = append(quoteNoAuthorResponses, ToQuoteNoAuthorResponse(quote))
+	}
+
+	return quoteNoAuthorResponses
+}
+
 func ToQuoteAndAuthorResponse(quote domain.Quote, author domain.Author) web.QuoteAndAuthorResponse {
 	return web.QuoteAndAuthorResponse{
-		Quote:  ToQuoteNoAuthor(quote),
+		Quote:  ToQuoteNoAuthorResponse(quote),
 		Author: ToAuthorResponse(author),
 	}
 }
@@ -55,6 +64,13 @@ func ToAuthorResponses(authors []domain.Author) []web.AuthorResponse {
 	}
 
 	return authorResponses
+}
+
+func ToAuthorAndQuotesResponse(author domain.Author, quotes []domain.Quote) web.AuthorAndQuotesResponse {
+	return web.AuthorAndQuotesResponse{
+		Author: ToAuthorResponse(author),
+		Quotes: ToQuoteNoAuthorResponses(quotes),
+	}
 }
 
 func ToNewWebResponse(code int, status string, data interface{}) web.WebResponse {

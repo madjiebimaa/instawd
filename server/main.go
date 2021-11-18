@@ -28,6 +28,8 @@ func main() {
 	authorService := service.NewAuthorService(authorRepository, db, validate)
 	authorController := controller.NewAuthorController(authorService)
 
+	// OPENING OF ALL PROGRAMMERS ===============
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
 	})
@@ -37,6 +39,7 @@ func main() {
 	app.Post("/api/quotes", quoteController.Create)
 	app.Get("/api/quotes", quoteController.FindAll)
 	app.Get("/api/quotes/random-quote", quoteController.FindRandom)
+	app.Get("/api/quotes/random-quote/author", quoteController.FindRandomAndAuthor)
 	app.Get("/api/quotes/:quoteId", quoteController.FindById)
 	app.Get("/api/quotes/:quoteId/author", quoteController.FindQuoteAndAuthor)
 
@@ -45,7 +48,10 @@ func main() {
 	app.Post("/api/authors", authorController.Create)
 	app.Get("/api/authors", authorController.FindAll)
 	app.Get("/api/authors/:authorId", authorController.FindById)
+	app.Get("/api/authors/:authorId/quotes", authorController.FindAuthorAndQuotes)
 	app.Get("/api/authors/slug/:authorSlug", authorController.FindBySlug)
 
 	app.Listen(":3000")
+
+	// random with author and author with quotes
 }

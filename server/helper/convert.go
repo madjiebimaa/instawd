@@ -23,6 +23,11 @@ func fileToBytes(location string) []byte {
 	return bytes
 }
 
+func ToSlugFromAuthorName(name string) string {
+	res := strings.ReplaceAll(strings.ToLower(name), " ", "-")
+	return res
+}
+
 type Tags struct {
 	Tags []Tag `json:"tags"`
 }
@@ -120,11 +125,6 @@ func QuotesNoSQLToSQL(location string) {
 	for i := 0; i < len(quotes.Quotes); i++ {
 		stmt.ExecContext(ctx, quotes.Quotes[i].Id, quotes.Quotes[i].Content, quotes.Quotes[i].AuthorId)
 	}
-}
-
-func ToSlugFromAuthorName(name string) string {
-	res := strings.ReplaceAll(strings.ToLower(name), " ", "-")
-	return res
 }
 
 func AddSlugToAuthors() {

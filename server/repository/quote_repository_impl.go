@@ -24,14 +24,14 @@ func (repository *QuoteRepositoryImpl) Create(ctx context.Context, tx *sql.Tx, q
 }
 
 func (repository *QuoteRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, quoteId string) domain.Quote {
-	SQL := "SELECT id, content, author_id FROM quote WHERE id = ?"
+	SQL := "SELECT id, author_id, content FROM quote WHERE id = ?"
 	rows, err := tx.QueryContext(ctx, SQL, quoteId)
 	helper.PanicIfError(err)
 	defer rows.Close()
 
 	var quote domain.Quote
 	if rows.Next() {
-		rows.Scan(&quote.Id, &quote.Content, &quote.AuthorId)
+		rows.Scan(&quote.Id, &quote.AuthorId, &quote.Content)
 	}
 
 	return quote
@@ -76,4 +76,20 @@ func (repository *QuoteRepositoryImpl) FindRandom(ctx context.Context, tx *sql.T
 	rows.Close()
 
 	return quote
+}
+
+func (repository *QuoteRepositoryImpl) FindByAuthorId(ctx context.Context, tx *sql.Tx, authorId string) []domain.Quote {
+	SQL := "SELECT id, author_id, content FROM quote WHERE author_id = ?"
+	rows, err := tx.QueryContext(ctx, SQL, authorId)
+	helper.PanicIfError(err)
+	defer rows.Close()
+
+	var quotes []domain.Quote
+	for rows.Next() {
+		var quote domain.Quote
+		rows.Scan(&quote.Id, &quote.AuthorId, &quote.Content)
+		quotes = append(quotes, quote)
+	}
+
+	return quotes
 }

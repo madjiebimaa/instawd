@@ -12,4 +12,5 @@ type QuoteService interface {
 	FindQuoteAndAuthor(ctx context.Context, request web.QuoteFindByIdRequest) web.QuoteAndAuthorResponse
 	FindAll(ctx context.Context) []web.QuoteResponse
 	FindRandom(ctx context.Context) web.QuoteResponse
+	FindRandomAndAuthor(ctx context.Context) web.QuoteAndAuthorResponse
 }

@@ -87,3 +87,14 @@ func (controller *QuoteControllerImpl) FindRandom(c *fiber.Ctx) error {
 	c.Type(fiber.MIMEApplicationJSON)
 	return c.JSON(webResponse)
 }
+
+func (controller *QuoteControllerImpl) FindRandomAndAuthor(c *fiber.Ctx) error {
+	ctx := context.Background()
+	quoteResponse := controller.QuoteService.FindRandomAndAuthor(ctx)
+
+	webResponse := helper.ToNewWebResponse(fiber.StatusOK, "OK", quoteResponse)
+
+	c.Status(fiber.StatusOK)
+	c.Type(fiber.MIMEApplicationJSON)
+	return c.JSON(webResponse)
+}

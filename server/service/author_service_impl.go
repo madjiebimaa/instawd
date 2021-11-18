@@ -86,3 +86,19 @@ func (service *AuthorServiceImpl) FindBySlug(ctx context.Context, request web.Au
 
 	return helper.ToAuthorResponse(author)
 }
+
+func (service *AuthorServiceImpl) FindAuthorAndQuotes(ctx context.Context, request web.AuthorFindByIdRequest) web.AuthorAndQuotesResponse {
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
+
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollBack(tx)
+
+	author := service.AuthorRepository.FindById(ctx, tx, request.Id)
+
+	quoteRepository := repository.NewQuoteRepository()
+	quotes := quoteRepository.FindByAuthorId(ctx, tx, author.Id)
+
+	return helper.ToAuthorAndQuotesResponse(author, quotes)
+}

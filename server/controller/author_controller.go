@@ -7,4 +7,5 @@ type AuthorController interface {
 	FindById(c *fiber.Ctx) error
 	FindAll(c *fiber.Ctx) error
 	FindBySlug(c *fiber.Ctx) error
+	FindAuthorAndQuotes(c *fiber.Ctx) error
 }

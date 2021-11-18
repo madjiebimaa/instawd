@@ -71,3 +71,34 @@ Content-Type: application/json
 GET http://localhost:3000/api/authors/ropvZKOXYhLr/quotes
 Accept: application/json
 Content-Type: application/json
+
+# ==================================================
+
+### Create Quote Tag
+POST http://localhost:3000/api/quote-tags
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "test"
+}
+
+### Find All Quote Tag
+GET http://localhost:3000/api/quote-tags
+Accept: application/json
+Content-Type: application/json
+
+### Find Quote Tag By ID
+GET http://localhost:3000/api/quote-tags/fvpORe-t
+Accept: application/json
+Content-Type: application/json
+
+### Delete Quote Tag
+DELETE  http://localhost:3000/api/quote-tags
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id": "e61e09eb-f2b",
+    "name": "test"
+}

@@ -5,6 +5,14 @@ import (
 	"github.com/madjiebimaa/go-random-quotes/model/web"
 )
 
+func ToNewWebResponse(code int, status string, data interface{}) web.WebResponse {
+	return web.WebResponse{
+		Code:   code,
+		Status: status,
+		Data:   data,
+	}
+}
+
 func ToQuoteResponse(quote domain.Quote) web.QuoteResponse {
 	return web.QuoteResponse{
 		Id:       quote.Id,
@@ -73,10 +81,18 @@ func ToAuthorAndQuotesResponse(author domain.Author, quotes []domain.Quote) web.
 	}
 }
 
-func ToNewWebResponse(code int, status string, data interface{}) web.WebResponse {
-	return web.WebResponse{
-		Code:   code,
-		Status: status,
-		Data:   data,
+func ToQuoteTagResponse(quoteTag domain.QuoteTag) web.QuoteTagResponse {
+	return web.QuoteTagResponse{
+		Id:   quoteTag.Id,
+		Name: quoteTag.Name,
 	}
+}
+
+func ToQuoteTagResponses(quoteTags []domain.QuoteTag) []web.QuoteTagResponse {
+	var quoteTagResponses []web.QuoteTagResponse
+	for _, quoteTag := range quoteTags {
+		quoteTagResponses = append(quoteTagResponses, ToQuoteTagResponse(quoteTag))
+	}
+
+	return quoteTagResponses
 }

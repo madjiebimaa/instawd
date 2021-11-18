@@ -54,3 +54,11 @@ WHERE quote_count = (
         SELECT MAX(quote_count)
         FROM author
     );
+-- 
+SELECT *
+FROM payments
+ORDER BY created_time
+LIMIT 10 OFFSET 20;
+-- 
+-- GET / payments ?
+-- limit = 10 & offset = 10

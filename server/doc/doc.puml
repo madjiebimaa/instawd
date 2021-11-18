@@ -8,6 +8,7 @@ entity Author {
     bio : VARCHAR
     description : VARCHAR
     *quote_count : INT
+    *slug : VARCHAR
 }
 
 entity Quote {

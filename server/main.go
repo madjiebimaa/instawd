@@ -28,6 +28,10 @@ func main() {
 	authorService := service.NewAuthorService(authorRepository, db, validate)
 	authorController := controller.NewAuthorController(authorService)
 
+	quoteTagsRepository := repository.NewQuoteTagRepository()
+	quoteTagService := service.NewQuoteTagService(quoteTagsRepository, db, validate)
+	quoteTagController := controller.NewQuoteTagController(quoteTagService)
+
 	// OPENING OF ALL PROGRAMMERS ===============
 
 	app.Get("/", func(c *fiber.Ctx) error {
@@ -51,7 +55,12 @@ func main() {
 	app.Get("/api/authors/:authorId/quotes", authorController.FindAuthorAndQuotes)
 	app.Get("/api/authors/slug/:authorSlug", authorController.FindBySlug)
 
-	app.Listen(":3000")
+	// QUOTE TAG ==================================
 
-	// random with author and author with quotes
+	app.Post("/api/quote-tags", quoteTagController.Create)
+	app.Get("/api/quote-tags", quoteTagController.FindAll)
+	app.Get("/api/quote-tags/:quoteTagId", quoteTagController.FindById)
+	app.Delete("/api/quote-tags/", quoteTagController.Delete)
+
+	app.Listen(":3000")
 }

@@ -7,6 +7,7 @@ import (
 
 	"github.com/madjiebimaa/go-random-quotes/helper"
 	"github.com/madjiebimaa/go-random-quotes/model/domain"
+	"github.com/madjiebimaa/go-random-quotes/model/web"
 )
 
 type QuoteRepositoryImpl struct{}
@@ -38,15 +39,17 @@ func (repository *QuoteRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx,
 }
 
 func (repository *QuoteRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Quote {
-	SQL := "SELECT id, author_id, content FROM quote"
-	rows, err := tx.QueryContext(ctx, SQL)
+	SQL := "SELECT id, author_id, content, CHAR_LENGTH(content) AS content_length FROM quote"
+
+	rows, err := repository.queryRowsFilter(ctx, tx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()
 
 	var quotes []domain.Quote
 	for rows.Next() {
 		var quote domain.Quote
-		rows.Scan(&quote.Id, &quote.AuthorId, &quote.Content)
+		var temp interface{}
+		rows.Scan(&quote.Id, &quote.AuthorId, &quote.Content, &temp)
 		quotes = append(quotes, quote)
 	}
 
@@ -92,4 +95,32 @@ func (repository *QuoteRepositoryImpl) FindByAuthorId(ctx context.Context, tx *s
 	}
 
 	return quotes
+}
+
+func (repository *QuoteRepositoryImpl) queryRowsFilter(ctx context.Context, tx *sql.Tx, SQL string) (*sql.Rows, error) {
+	var filterValues []interface{}
+	var filterRequest web.FilterRequest
+	helper.QueryToStruct(ctx, helper.FILTER_REQUEST, &filterRequest)
+
+	if filterRequest.MinLength != 0 {
+		filterValues = append(filterValues, filterRequest.MinLength)
+		SQL += ` HAVING content_length > ?`
+	}
+
+	if filterRequest.MaxLength != 0 {
+		filterValues = append(filterValues, filterRequest.MaxLength)
+		SQL += ` AND content_length < ?`
+	}
+
+	if filterRequest.Limit != 0 {
+		filterValues = append(filterValues, filterRequest.Limit)
+		SQL += ` LIMIT ?`
+	}
+
+	if filterRequest.Offset != 0 {
+		filterValues = append(filterValues, filterRequest.Offset)
+		SQL += ` OFFSET ?`
+	}
+
+	return tx.QueryContext(ctx, SQL, filterValues...)
 }

@@ -18,11 +18,16 @@ GET http://localhost:3000/api/quotes
 Accept: application/json
 Content-Type: application/json
 
+### Get All Quotes With Filters
+GET http://localhost:3000/api/quotes?min-length=10&max-length=30&limit=2&offset=2
+Accept: application/json
+
+Content-Type: application/json
 ### Find Quote By ID
 GET http://localhost:3000/api/quotes/LVmRBE6cytXv
 Accept: application/json
 Content-Type: application/json
- 
+
 ### Find Quote And Author
 GET http://localhost:3000/api/quotes/LVmRBE6cytXv/author
 Accept: application/json

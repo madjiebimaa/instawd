@@ -67,9 +67,14 @@ func (controller *QuoteControllerImpl) FindQuoteAndAuthor(c *fiber.Ctx) error {
 }
 
 func (controller *QuoteControllerImpl) FindAll(c *fiber.Ctx) error {
-	ctx := context.Background()
-	quoteResponses := controller.QuoteService.FindAll(ctx)
+	var filterRequest web.FilterRequest
+	err := c.QueryParser(&filterRequest)
+	helper.PanicIfError(err)
 
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, helper.FILTER_REQUEST, filterRequest)
+
+	quoteResponses := controller.QuoteService.FindAll(ctx)
 	webResponse := helper.ToNewWebResponse(fiber.StatusOK, "OK", quoteResponses)
 
 	c.Status(fiber.StatusOK)

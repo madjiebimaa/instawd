@@ -157,3 +157,9 @@ func AddSlugToAuthors() {
 
 	tx.Commit()
 }
+
+func QueryToStruct(ctx context.Context, keyCtx string, result interface{}) {
+	query := ctx.Value(keyCtx)
+	byteData, _ := json.Marshal(query)
+	json.Unmarshal(byteData, &result)
+}

@@ -55,10 +55,22 @@ WHERE quote_count = (
         FROM author
     );
 -- 
-SELECT *
-FROM payments
-ORDER BY created_time
+SELECT id,
+    author_id
+FROM quote
+ORDER BY id
 LIMIT 10 OFFSET 20;
--- 
--- GET / payments ?
--- limit = 10 & offset = 10
+--
+SELECT id,
+    author_id,
+    content,
+    CHAR_LENGTH(content) AS content_length
+FROM quote
+HAVING content_length > 10
+    AND content_length < 30;
+--
+SELECT id,
+    author_id,
+    content,
+    CHAR_LENGTH(content) AS content_length
+FROM quote

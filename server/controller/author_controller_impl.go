@@ -55,6 +55,7 @@ func (controller *AuthorControllerImpl) FindAll(c *fiber.Ctx) error {
 	ctx := context.Background()
 
 	authorResponses := controller.AuthorService.FindAll(ctx)
+
 	webResponse := helper.ToNewWebResponse(fiber.StatusOK, "OK", authorResponses)
 
 	c.Status(fiber.StatusOK)

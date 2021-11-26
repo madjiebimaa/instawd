@@ -85,14 +85,17 @@ func (service *QuoteServiceImpl) FindAll(ctx context.Context) []web.QuoteRespons
 	return helper.ToQuoteResponses(quotes)
 }
 
-func (service *QuoteServiceImpl) FindRandom(ctx context.Context) web.QuoteResponse {
+func (service *QuoteServiceImpl) FindRandom(ctx context.Context) web.QuoteRandomResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollBack(tx)
 
 	quote := service.QuoteRepository.FindRandom(ctx, tx)
 
-	return helper.ToQuoteResponse(quote)
+	authorRepository := repository.NewAuthorRepository()
+	author := authorRepository.FindById(ctx, tx, quote.AuthorId)
+
+	return helper.ToQuoteRandomResponse(author, quote)
 }
 
 func (service *QuoteServiceImpl) FindRandomAndAuthor(ctx context.Context) web.QuoteAndAuthorResponse {

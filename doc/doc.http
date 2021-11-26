@@ -1,7 +1,5 @@
 ### Opening
 GET http://localhost:3000/
-Accept: application/json
-Content-Type: application/json
 
 ### Create Quote
 POST http://localhost:3000/api/quotes
@@ -15,33 +13,21 @@ Content-Type: application/json
 
 ### Get All Quotes
 GET http://localhost:3000/api/quotes
-Accept: application/json
-Content-Type: application/json
 
 ### Get All Quotes With Filters
 GET http://localhost:3000/api/quotes?min-length=10&max-length=30&limit=2&offset=2
-Accept: application/json
 
-Content-Type: application/json
 ### Find Quote By ID
 GET http://localhost:3000/api/quotes/LVmRBE6cytXv
-Accept: application/json
-Content-Type: application/json
 
 ### Find Quote And Author
 GET http://localhost:3000/api/quotes/LVmRBE6cytXv/author
-Accept: application/json
-Content-Type: application/json
 
 ### Get Random Quote
 GET http://localhost:3000/api/quotes/random-quote
-Accept: application/json
-Content-Type: application/json
 
 ### Get Random Quote And Author
 GET http://localhost:3000/api/quotes/random-quote/author
-Accept: application/json
-Content-Type: application/json
 
 # ==================================================
 
@@ -54,28 +40,20 @@ Content-Type: application/json
     "name": "test",
     "link": "test",
     "bio": "test",
-    "description": "test",
+    "description": "test"
 }
 
 ### Find All Author
 GET http://localhost:3000/api/authors
-Accept: application/json
-Content-Type: application/json
 
 ### Find Author By ID
 GET http://localhost:3000/api/authors/-yyCeRZpAZLI
-Accept: application/json
-Content-Type: application/json
 
 ### Find Author By Slug
 GET http://localhost:3000/api/authors/slug/william-sloane-coffin
-Accept: application/json
-Content-Type: application/json
 
 ### Find Author And Quotes
 GET http://localhost:3000/api/authors/ropvZKOXYhLr/quotes
-Accept: application/json
-Content-Type: application/json
 
 # ==================================================
 
@@ -90,18 +68,12 @@ Content-Type: application/json
 
 ### Find All Quote Tag
 GET http://localhost:3000/api/quote-tags
-Accept: application/json
-Content-Type: application/json
 
 ### Find Quote Tag By ID
 GET http://localhost:3000/api/quote-tags/fvpORe-t
-Accept: application/json
-Content-Type: application/json
 
 ### Delete Quote Tag
 DELETE  http://localhost:3000/api/quote-tags
-Accept: application/json
-Content-Type: application/json
 
 {
     "id": "e61e09eb-f2b",

@@ -15,3 +15,9 @@ type QuoteAndAuthorResponse struct {
 	Quote  QuoteNoAuthorResponse `json:"quote"`
 	Author AuthorResponse        `json:"author"`
 }
+
+type QuoteRandomResponse struct {
+	Id      string `json:"id"`
+	Author  string `json:"author"`
+	Content string `json:"content"`
+}

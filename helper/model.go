@@ -96,3 +96,11 @@ func ToQuoteTagResponses(quoteTags []domain.QuoteTag) []web.QuoteTagResponse {
 
 	return quoteTagResponses
 }
+
+func ToQuoteRandomResponse(author domain.Author, quote domain.Quote) web.QuoteRandomResponse {
+	return web.QuoteRandomResponse{
+		Id:      quote.Id,
+		Author:  author.Name,
+		Content: quote.Content,
+	}
+}

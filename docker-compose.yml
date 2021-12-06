@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  random-quotes-mysql:
+    image: mysql:8.0.27
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=rahasia
+      - MYSQL_DATABASE=random_quotes_backend
+    volumes:
+      -  ./server/docs/doc.sql:/docker-entrypoint-initdb.d/doc.sql
+  random-quotes-backend:
+    image: madjiebimaa/random-quotes-backend:1.0
+    ports:
+      - 3000:3000
+    environment:
+      - MYSQL_HOST=random-quotes-mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=rahasia
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=random_quotes_backend
+    depends_on:
+      - random-quotes-mysql

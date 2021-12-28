@@ -1,0 +1,32 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@accToken = 
+
+### Create Quote
+POST http://{{host}}/api/quotes HTTP/1.1
+Content-Type: application/json
+
+{
+    "author_id": "pY4cjNm7ogoc",
+    "content": "test"
+}
+
+### Get All Quotes
+GET http://{{host}}/api/quotes HTTP/1.1
+
+### Get All Quotes With Filters
+GET http://{{host}}/api/quotes?min-length=10&max-length=30&limit=2&offset=2 HTTP/1.1
+
+### Find Quote By ID
+GET http://{{host}}/api/quotes/LVmRBE6cytXv HTTP/1.1
+
+### Find Quote And Author
+GET http://{{host}}/api/quotes/LVmRBE6cytXv/author HTTP/1.1
+
+### Get Random Quote
+GET http://{{host}}/api/quotes/random-quote HTTP/1.1
+
+### Get Random Quote And Author
+GET http://{{host}}/api/quotes/random-quote/author HTTP/1.1
+

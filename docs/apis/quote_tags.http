@@ -1,0 +1,27 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@accToken = 
+
+### Create Quote Tag
+POST http://{{host}}/api/quote-tags HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "test"
+}
+
+### Find All Quote Tag
+GET http://{{host}}/api/quote-tags HTTP/1.1
+
+### Find Quote Tag By ID
+GET http://{{host}}/api/quote-tags/fvpORe-t HTTP/1.1
+
+### Delete Quote Tag
+DELETE  http://{{host}}/api/quote-tags HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "e61e09eb-f2b",
+    "name": "test"
+}

@@ -1,30 +1,68 @@
 @startuml Instawd ERD
 
-entity Author {
-    *id : VARCHAR
+entity Users {
+    *id: VARCHAR(40)
     --
-    *name : VARCHAR
-    link : VARCHAR
-    bio : VARCHAR
-    description : VARCHAR
-    *quote_count : INT
-    *slug : VARCHAR
+    *name: VARCHAR(40)
+    *email: VARCHAR(20)
+    *password: VARCHAR(20)
 }
 
-entity Quote {
-    *id : VARCHAR
+entity Authors {
+    *id: VARCHAR(40)
     --
-    *content : VARCHAR
-    *author_id : VARCHAR
+    *user_id: VARCHAR(40)
+    *quote_count: INT
+    *slug: VARCHAR(40)
+    ' *name: VARCHAR(40)
+    link: VARCHAR(2500)
+    bio: VARCHAR(1000)
+    description: VARCHAR(250)
+    created_at: TIME
 }
 
-entity QuoteTag {
-    *id : VARCHAR
+entity Quotes {
+    *id: VARCHAR(40)
     --
-    *name : VARCHAR
+    *content: VARCHAR(250)
+    *author_id: VARCHAR(40)
+    created_at: TIME
+    updated_at: TIME
 }
 
-Author ||--o{ Quote : Create
-Quote }o--o{ QuoteTag : Has
+entity Tags {
+    *id: VARCHAR(40)
+    --
+    *name: VARCHAR(20)
+}
+
+entity Follows {
+    *id: VARCHAR(40)
+    --
+    *user_id: VARCHAR(40)
+    *follower_id: VARCHAR(40)
+    created_at: TIME
+}
+
+entity Likes {
+    *id: VARCHAR(40)
+    --
+    *user_id: VARCHAR(40)
+    *quote_id: VARCHAR(40)
+    created_at: TIME
+}
+
+entity QuotesTags {
+    *id: VARCHAR(40)
+    --
+    *quote_id: VARCHAR(40)
+    *tag_id: VARCHAR(40)
+}
+
+Users ||--||Authors : As
+Authors }o--o{ Authors : Follow
+Authors }o--o{ Quotes : Like
+Authors ||--o{ Quotes : Create
+Quotes }o--o{ Tags : Has
 
 @enduml
